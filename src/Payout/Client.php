@@ -34,7 +34,7 @@ use Exception;
  * https://postman.payout.one/
  *
  * @package    Payout
- * @version    0.1.0
+ * @version    0.2.0
  * @copyright  2019 Payout, s.r.o.
  * @author     Neotrendy s. r. o.
  * @link       https://github.com/payout-one/payout_php
@@ -104,10 +104,52 @@ class Client
         return $this->connection;
     }
 
+    /**
+     * Create signature as SHA256 hash of message.
+     *
+     * @param $message
+     * @return string
+     */
+    private function getSignature($message) {
+        return hash('sha256', pack('A*', $message));
+    }
+
+    /**
+     * Generate nonce string. In cryptography, a nonce is an arbitrary number
+     * that can be used just once in a cryptographic communication.
+     * https://en.wikipedia.org/wiki/Cryptographic_nonce
+     *
+     * @return string
+     */
+    private function generateNonce() {
+        // TODO use more secure nonce https://secure.php.net/manual/en/function.random-bytes.php
+        $bytes = openssl_random_pseudo_bytes(32);
+        $hash = base64_encode($bytes);
+        return $hash;
+    }
+
+    /**
+     * Verify input data and create checkout and post signed data to API.
+     *
+     * @param array $data
+     * @return mixed
+     * @throws Exception
+     */
     public function createCheckout($data)
     {
         $checkout = new Checkout();
+
         $prepared_checkout = $checkout->create($data);
+
+        $nonce = $this->generateNonce();
+        $prepared_checkout['nonce'] = $nonce;
+
+        $message = sprintf("%s|%s|%s|%s|%s", $prepared_checkout['amount'], $prepared_checkout['currency'], $prepared_checkout['external_id'], $nonce, $this->config['client_secret']);
+        $signature = $this->getSignature($message);
+        $prepared_checkout['signature'] = $signature;
+
+        $prepared_checkout = json_encode($prepared_checkout);
+
         $response = $this->connection()->post("checkouts", $prepared_checkout);
         return $response;
     }
