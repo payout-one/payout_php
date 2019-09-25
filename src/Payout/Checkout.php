@@ -83,7 +83,7 @@ class Checkout
                 "last_name" =>  $data['customer']['last_name'],
                 "email" =>  $data['customer']['email']
             ],
-            "external_id" => $data['external_id'],
+            "external_id" => strval($data['external_id']),
             "nonce" => '',
             "redirect_url" => $data['redirect_url'],
             "signature" => ''

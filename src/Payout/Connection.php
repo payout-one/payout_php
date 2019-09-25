@@ -89,9 +89,6 @@ class Connection
         $this->addHeader('Accept', self::TYPE_JSON);
 
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, $this->headers);
-        curl_setopt($this->curl, CURLOPT_POST, false);
-        curl_setopt($this->curl, CURLOPT_PUT, false);
-        curl_setopt($this->curl, CURLOPT_HTTPGET, false);
     }
 
     /**
@@ -113,12 +110,8 @@ class Connection
             'client_secret' => $client_secret
         ));
 
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($this->curl, CURLOPT_URL, $this->base_url . $url);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $credentials);
-        curl_setopt($this->curl, CURLOPT_POST, true);
-        curl_setopt($this->curl, CURLOPT_PUT, false);
-        curl_setopt($this->curl, CURLOPT_HTTPGET, false);
 
         $this->response = curl_exec($this->curl);
 
@@ -143,14 +136,10 @@ class Connection
             $body = json_encode($body);
         }
 
-        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($this->curl, CURLOPT_URL, $url);
+        curl_setopt($this->curl, CURLOPT_URL, $this->base_url . $url);
         curl_setopt($this->curl, CURLOPT_POSTFIELDS, $body);
-        curl_setopt($this->curl, CURLOPT_POST, true);
-        curl_setopt($this->curl, CURLOPT_PUT, false);
-        curl_setopt($this->curl, CURLOPT_HTTPGET, false);
 
-        curl_exec($this->curl);
+        $this->response = curl_exec($this->curl);
 
         return $this->handleResponse();
     }
@@ -174,7 +163,7 @@ class Connection
         }
 
         curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($this->curl, CURLOPT_URL, $url);
+        curl_setopt($this->curl, CURLOPT_URL, $this->base_url . $url);
         curl_setopt($this->curl, CURLOPT_POST, false);
         curl_setopt($this->curl, CURLOPT_PUT, false);
         curl_setopt($this->curl, CURLOPT_HTTPGET, true);
@@ -198,13 +187,15 @@ class Connection
 
         $response = json_decode($this->response);
 
-        if($response->errors) {
+        if (isset($response->errors)) {
             throw new Exception($response->errors);
         }
 
-        if ($response->token) {
+        if (isset($response->token)) {
             $this->token = $response->token;
         }
+
+        // TODO verify signature
 
         return $response;
     }

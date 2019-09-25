@@ -34,15 +34,16 @@ use Exception;
  * https://postman.payout.one/
  *
  * @package    Payout
- * @version    0.2.0
+ * @version    0.3.0
  * @copyright  2019 Payout, s.r.o.
  * @author     Neotrendy s. r. o.
  * @link       https://github.com/payout-one/payout_php
  */
 class Client
 {
-    const LIB_VER = "0.1.0";
+    const LIB_VER = "0.3.0";
     const API_URL = 'https://ie.payout.one/api/v1/';
+    const API_URL_SANDBOX = 'https://sandbox.payout.one/api/v1/';
 
     /**
      * @var array $config API client configuration
@@ -70,7 +71,7 @@ class Client
             [
                 'client_id' => '',
                 'client_secret' => '',
-                'store_url'
+                'sandbox' => false
             ],
             $config
         );
@@ -97,7 +98,8 @@ class Client
     private function connection()
     {
         if (!$this->connection) {
-            $this->connection = new Connection(self::API_URL);
+            $api_url = ($this->config['sandbox']) ? self::API_URL_SANDBOX : self::API_URL;
+            $this->connection = new Connection($api_url);
             $this->token = $this->connection->authenticate('authorize', $this->config['client_id'], $this->config['client_secret']);
         }
 
