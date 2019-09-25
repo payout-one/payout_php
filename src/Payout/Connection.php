@@ -59,7 +59,7 @@ class Connection
 
         curl_setopt_array($this->curl, array(
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
+            CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
             CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => false,
@@ -102,7 +102,8 @@ class Connection
      * @return mixed
      * @throws Exception
      */
-    public function authenticate($url, $client_id, $client_secret) {
+    public function authenticate($url, $client_id, $client_secret)
+    {
         $this->initializeRequest();
 
         $credentials = json_encode(array(
@@ -182,20 +183,18 @@ class Connection
     private function handleResponse()
     {
         if (curl_error($this->curl)) {
-            throw new Exception(curl_error($this->curl));
+            throw new Exception('Payout error: ' . curl_error($this->curl));
         }
 
         $response = json_decode($this->response);
 
         if (isset($response->errors)) {
-            throw new Exception($response->errors);
+            throw new Exception('Payout error: ' . $response->errors);
         }
 
         if (isset($response->token)) {
             $this->token = $response->token;
         }
-
-        // TODO verify signature
 
         return $response;
     }

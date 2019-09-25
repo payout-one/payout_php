@@ -44,49 +44,50 @@ class Checkout
      * @return array
      * @throws Exception
      */
-    public function create($data) {
+    public function create($data)
+    {
         if (!is_array($data)) {
-            throw new Exception('Payout: wrong checkout parameters.');
+            throw new Exception('Payout error: Wrong checkout parameters.');
         }
 
         $checkout_required = array(
-            "amount",
-            "currency",
-            "customer",
-            "external_id",
-            "redirect_url"
+            'amount',
+            'currency',
+            'customer',
+            'external_id',
+            'redirect_url'
         );
 
         foreach ($checkout_required as $required_attribute) {
             if (!key_exists($required_attribute, $data)) {
-                throw new Exception('Payout: Missing required parameter "' . $required_attribute . '"');
+                throw new Exception("Payout error: Missing required parameter \"$required_attribute\".");
             }
         }
 
         $customer_required = array(
-            "first_name",
-            "last_name",
-            "email"
+            'first_name',
+            'last_name',
+            'email'
         );
 
         foreach ($customer_required as $required_attribute) {
             if (!key_exists($required_attribute, $data['customer'])) {
-                throw new Exception('Payout: Missing required parameter "' . $required_attribute . '"');
+                throw new Exception("Payout error: Missing required parameter \"$required_attribute\".");
             }
         }
 
         $checkout_data = array(
-            "amount" => number_format($data['amount'] * 100, 0, '.', ''), // Amount in cents
-            "currency" => $data['currency'],
-            "customer" => [
-                "first_name" => $data['customer']['first_name'],
-                "last_name" =>  $data['customer']['last_name'],
-                "email" =>  $data['customer']['email']
+            'amount' => number_format($data['amount'] * 100, 0, '.', ''), // Amount in cents
+            'currency' => $data['currency'],
+            'customer' => [
+                'first_name' => $data['customer']['first_name'],
+                'last_name' =>  $data['customer']['last_name'],
+                'email' =>  $data['customer']['email']
             ],
-            "external_id" => strval($data['external_id']),
-            "nonce" => '',
-            "redirect_url" => $data['redirect_url'],
-            "signature" => ''
+            'external_id' => strval($data['external_id']),
+            'nonce' => '',
+            'redirect_url' => $data['redirect_url'],
+            'signature' => ''
         );
 
         if (isset($data['metadata']) && is_array($data['metadata'])) {

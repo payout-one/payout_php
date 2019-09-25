@@ -34,14 +34,14 @@ use Exception;
  * https://postman.payout.one/
  *
  * @package    Payout
- * @version    0.3.0
+ * @version    0.9.0
  * @copyright  2019 Payout, s.r.o.
  * @author     Neotrendy s. r. o.
  * @link       https://github.com/payout-one/payout_php
  */
 class Client
 {
-    const LIB_VER = "0.3.0";
+    const LIB_VER = '0.9.0';
     const API_URL = 'https://ie.payout.one/api/v1/';
     const API_URL_SANDBOX = 'https://sandbox.payout.one/api/v1/';
 
@@ -112,8 +112,28 @@ class Client
      * @param $message
      * @return string
      */
-    private function getSignature($message) {
+    private function getSignature($message)
+    {
+        $message = implode('|', $message);
         return hash('sha256', pack('A*', $message));
+    }
+
+    /**
+     * Verify signature obtained in API response.
+     *
+     * @param array $message to be signed
+     * @param string $signature from response
+     * @return bool
+     */
+    public function verifySignature($message, $signature)
+    {
+        $message[] = $this->config['client_secret'];
+
+        if (strcmp($this->getSignature($message), $signature) == 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -123,7 +143,8 @@ class Client
      *
      * @return string
      */
-    private function generateNonce() {
+    private function generateNonce()
+    {
         // TODO use more secure nonce https://secure.php.net/manual/en/function.random-bytes.php
         $bytes = openssl_random_pseudo_bytes(32);
         $hash = base64_encode($bytes);
@@ -146,13 +167,18 @@ class Client
         $nonce = $this->generateNonce();
         $prepared_checkout['nonce'] = $nonce;
 
-        $message = sprintf("%s|%s|%s|%s|%s", $prepared_checkout['amount'], $prepared_checkout['currency'], $prepared_checkout['external_id'], $nonce, $this->config['client_secret']);
+        $message = array($prepared_checkout['amount'], $prepared_checkout['currency'], $prepared_checkout['external_id'], $nonce, $this->config['client_secret']);
         $signature = $this->getSignature($message);
         $prepared_checkout['signature'] = $signature;
 
         $prepared_checkout = json_encode($prepared_checkout);
 
-        $response = $this->connection()->post("checkouts", $prepared_checkout);
+        $response = $this->connection()->post('checkouts', $prepared_checkout);
+
+        if (!$this->verifySignature(array($response->amount, $response->currency, $response->external_id, $response->nonce), $response->signature)) {
+            throw new Exception('Payout error: Invalid signature in API response.');
+        }
+
         return $response;
     }
 }
