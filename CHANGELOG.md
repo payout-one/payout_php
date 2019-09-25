@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0 - 2019‑09-25
+* Sandbox mode and other fixes ([c0ff684](https://github.com/payout-one/payout_php/commit/c0ff6843a59fb4e4a8f2f4c017a18231b2ba0b48))
+
 ## 0.2.0 - 2019‑09-24
 * Class checkout and createCheckout method ([7362a23](https://github.com/payout-one/payout_php/commit/7362a2372f56b938206fb02f4e7fd50d2a392148))
 

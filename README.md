@@ -5,6 +5,7 @@ The Payout PHP library for API client.
 ## Features
 
 * Card payments
+* Bank transfers
 * Multi-language (english, slovak, czech)
 * Multi-currency
 
@@ -19,7 +20,7 @@ TODO
 
 ## Version
 
-Stable version: 0.0.0
+Stable version: 0.3.0
 
 See the [CHANGELOG.md](CHANGELOG.md) file for list off all changes.
 
