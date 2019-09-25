@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.0 (first beta) - 2019‑09-25
+* Signature verification ([bcc3148](https://github.com/payout-one/payout_php/commit/bcc31481f8ebddea61551026bf329c59a969cf8e))
+
 ## 0.3.0 - 2019‑09-25
 * Sandbox mode and other fixes ([c0ff684](https://github.com/payout-one/payout_php/commit/c0ff6843a59fb4e4a8f2f4c017a18231b2ba0b48))
 

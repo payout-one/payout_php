@@ -20,7 +20,7 @@ TODO
 
 ## Version
 
-Stable version: 0.3.0
+Stable version: 0.9.0 (beta)
 
 See the [CHANGELOG.md](CHANGELOG.md) file for list off all changes.
 
