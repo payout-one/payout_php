@@ -1,6 +1,9 @@
 # Changelog
 
-## 0.9.1 RC -  2019-10-02
+## 1.0.0 - 2019-10-04
+* Final version release ([9a0a8f8](https://github.com/payout-one/payout_php/commit/9a0a8f8c41a7dd4d507c975e6987e7227f6d39af))
+
+## 0.9.1 RC - 2019-10-02
 * Release candidate
 * Live API URL changed ([071e987](https://github.com/payout-one/payout_php/commit/071e987fdd5f0248d0627fdc6216f975de49e354))
 
