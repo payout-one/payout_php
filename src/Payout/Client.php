@@ -34,14 +34,14 @@ use Exception;
  * https://postman.payout.one/
  *
  * @package    Payout
- * @version    0.9.1
+ * @version    1.0.0
  * @copyright  2019 Payout, s.r.o.
  * @author     Neotrendy s. r. o.
  * @link       https://github.com/payout-one/payout_php
  */
 class Client
 {
-    const LIB_VER = '0.9.1';
+    const LIB_VER = '1.0.0';
     const API_URL = 'https://app.payout.one/api/v1/';
     const API_URL_SANDBOX = 'https://sandbox.payout.one/api/v1/';
 
