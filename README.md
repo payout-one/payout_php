@@ -4,26 +4,27 @@ The Payout PHP library for API client.
 
 ## Features
 
-* Card payments
-* Bank transfers
-* Multi-language (english, slovak, czech)
-* Multi-currency
+- Card payments
+- Bank transfers
+- Multi-language (english, slovak, czech)
+- Multi-currency
 
 ## Requirements
 
-* PHP 5.5 or later
-* cUrl extension enabled
-* Payout account
+- PHP 5.5 or later
+- cUrl extension enabled
+- Payout account
 
 ## Getting Started
 
 ### Installation
 
 Download [the latest release](https://github.com/payout-one/payout_php/releases), unpack the ZIP file and upload
-``Payout`` directory to your project library folder. Then include the `init.php` file.
- ```php
+`Payout` directory to your project library folder. Then include the `init.php` file.
+
+```php
 require_once('/path-to-your-system-library/Payout/init.php');
- ```
+```
 
 ### Namespace
 
@@ -56,10 +57,10 @@ You can print library version to test the installation.
 echo $payout->getLibraryVersion();
 ```
 
-### Create checkout 
+### Create checkout
 
-Prepare array with checkout data and pass it to the `createCheckout()` method. Response from 
-[API POST Create checkout](https://postman.payout.one/?version=latest#d5b91144-1e72-4c9b-bd10-22aa14aa526e) 
+Prepare array with checkout data and pass it to the `createCheckout()` method. Response from
+[API POST Create checkout](https://postman.payout.one/?version=latest#d5b91144-1e72-4c9b-bd10-22aa14aa526e)
 is returned as PHP object.
 
 ```php
@@ -121,6 +122,10 @@ try {
     $response = $payout->createCheckout($checkout_data);
     print_r($response);
 
+    $checkout_details_response = $payout->getCheckout($response->{'id'});
+    print_r($checkout_details_response);
+
+
 } catch (Exception $e) {
     echo $e->getMessage();
 }
@@ -129,7 +134,7 @@ try {
 Output of example above looks like:
 
 ```text
-1.0.0
+1.0.1
 stdClass Object
 (
     [amount] => 68350
@@ -144,11 +149,11 @@ stdClass Object
 
     [external_id] => 20190001
     [id] => 476661
-    [idempotency_key] => 
-    [metadata] => 
+    [idempotency_key] =>
+    [metadata] =>
     [nonce] => dmc0OUljd08yUmhycldkUQ
     [object] => checkout
-    [payment] => 
+    [payment] =>
     [redirect_url] => https://payout.one/payment/redirect
     [signature] => 56e5469cb716c224c765359e1178667f8c652c76973aee61f03fa691cfe60484
     [status] => processing
@@ -157,13 +162,13 @@ stdClass Object
 
 ## Version
 
-Stable version: 1.0.0
+Stable version: 1.0.1
 
 See the [CHANGELOG.md](CHANGELOG.md) file for list off all changes.
 
 ## Compatibility
 
-* Tested with PHP 5.5
+- Tested with PHP 5.5
 
 ## Documentation
 

@@ -169,7 +169,7 @@ class Connection
         curl_setopt($this->curl, CURLOPT_PUT, false);
         curl_setopt($this->curl, CURLOPT_HTTPGET, true);
 
-        curl_exec($this->curl);
+        $this->response = curl_exec($this->curl);
 
         return $this->handleResponse();
     }
