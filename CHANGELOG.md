@@ -2,7 +2,7 @@
 
 ## 1.0.1 - 2021-01-25
 
-- Added Get Details function ()
+- Added Get Details function ([2469ca1](https://github.com/payout-one/payout_php/commit/2469ca1dd0af9e36983b5c28b9368cd530317c65))
 
 ## 1.0.0 - 2019-10-04
 
