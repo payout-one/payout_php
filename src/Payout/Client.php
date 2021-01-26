@@ -191,7 +191,7 @@ class Client
      */
     public function getCheckout($checkout_id)
     {
-        $url = 'checkouts/'.$checkout_id;
+        $url = 'checkouts/' . $checkout_id;
         $response = $this->connection()->get($url);
 
         if (!$this->verifySignature(array($response->amount, $response->currency, $response->external_id, $response->nonce), $response->signature)) {
