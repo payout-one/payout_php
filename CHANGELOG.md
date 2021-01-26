@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.2 - 2021-01-26
+
+- Changelog (9afbbcd03209ccf348ec30e5566e439ebaf652ef) by Oliver Kriska
+- Checkout - added support for new attributes (45a919b978d47f58e396b37d966619ab1fd2b60c) by Oliver Kriska
+
 ## 1.0.1 - 2021-01-25
 
 - Added Get Details function ([2469ca1](https://github.com/payout-one/payout_php/commit/2469ca1dd0af9e36983b5c28b9368cd530317c65))
