@@ -34,14 +34,14 @@ use Exception;
  * https://postman.payout.one/
  *
  * @package    Payout
- * @version    1.0.1
+ * @version    1.0.3
  * @copyright  2021 Payout, s.r.o.
  * @author     Neotrendy s. r. o.
  * @link       https://github.com/payout-one/payout_php
  */
 class Client
 {
-    const LIB_VER = '1.0.1';
+    const LIB_VER = '1.0.3';
     const API_URL = 'https://app.payout.one/api/v1/';
     const API_URL_SANDBOX = 'https://sandbox.payout.one/api/v1/';
 
@@ -197,6 +197,36 @@ class Client
         if (!$this->verifySignature(array($response->amount, $response->currency, $response->external_id, $response->nonce), $response->signature)) {
             throw new Exception('Payout error: Invalid signature in API response.');
         }
+
+        return $response;
+    }
+
+
+    public function createRefund($data, $log)
+    {
+        $refund = new Refund();
+
+        $prepared_refund = $refund->create($data);
+
+        $nonce = $this->generateNonce();
+        $prepared_refund['nonce'] = $nonce;
+
+        $message = array($prepared_refund['amount'], $prepared_refund['currency'], $prepared_refund['checkout_id'], $prepared_refund['iban'], $nonce, $this->config['client_secret']);
+        $signature = $this->getSignature($message);
+        $prepared_refund['signature'] = $signature;
+
+        $prepared_refund['checkout_id'] = $prepared_refund['payout_id'];
+        unset($prepared_refund['payout_id']);
+
+        $prepared_refund = json_encode($prepared_refund);
+
+        $response = $this->connection()->post('refunds', $prepared_refund);
+
+        if (!$this->verifySignature(array($response->amount, $response->currency, $response->external_id, '', $response->nonce), $response->signature)) {
+            throw new Exception('Payout error: Invalid signature in API response.');
+        }
+
+        $log->write('Payout :: verifySignature Refund pass!');
 
         return $response;
     }
