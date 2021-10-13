@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 - 2021-10-13
+
+- Refund - added support for refund api calls #1 by @turboroller
+
 ## 1.0.2 - 2021-01-26
 
 - Changelog (9afbbcd03209ccf348ec30e5566e439ebaf652ef) by Oliver Kriska

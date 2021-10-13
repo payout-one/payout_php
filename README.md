@@ -134,7 +134,7 @@ try {
 Output of example above looks like:
 
 ```text
-1.0.1
+1.0.3
 stdClass Object
 (
     [amount] => 68350
@@ -162,7 +162,7 @@ stdClass Object
 
 ## Version
 
-Stable version: 1.0.1
+Stable version: 1.0.3
 
 See the [CHANGELOG.md](CHANGELOG.md) file for list off all changes.
 
