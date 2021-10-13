@@ -200,4 +200,34 @@ class Client
 
         return $response;
     }
+    
+    
+    public function createRefund($data, $log)
+    {
+        $refund = new Refund();
+
+        $prepared_refund = $refund->create($data);
+
+        $nonce = $this->generateNonce();
+        $prepared_refund['nonce'] = $nonce;
+
+        $message = array($prepared_refund['amount'], $prepared_refund['currency'], $prepared_refund['checkout_id'], $prepared_refund['iban'], $nonce, $this->config['client_secret']);
+        $signature = $this->getSignature($message);
+        $prepared_refund['signature'] = $signature;
+
+        $prepared_refund['checkout_id'] = $prepared_refund['payout_id'];
+        unset($prepared_refund['payout_id']);
+
+        $prepared_refund = json_encode($prepared_refund);
+
+        $response = $this->connection()->post('refunds', $prepared_refund);
+        
+        if (!$this->verifySignature(array($response->amount, $response->currency, $response->external_id, '', $response->nonce), $response->signature)) {
+            throw new Exception('Payout error: Invalid signature in API response.');
+        }
+
+        $log->write('Payout :: verifySignature Refund pass!');
+
+        return $response;
+    }
 }
